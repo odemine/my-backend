@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Odemine | Drive Your Dreams</title>
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    body{
+      margin:0;
+      background:#111;
+      color:white;
+      font-family:Arial,sans-serif;
+    }
+
+    .hero{
+      position:relative;
+      height:100vh;
+      overflow:hidden;
+    }
+
+    .slide{
+      position:absolute;
+      width:100%;
+      height:100%;
+      opacity:0;
+      transition:1s;
+    }
+
+    .slide.active{
+      opacity:1;
+    }
+
+    .slide img{
+      width:100%;
+      height:100vh;
+      object-fit:cover;
+    }
+
+    .slide::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+    }
+
+    .hero-content{
+      position:absolute;
+      top:50%;
+      left:8%;
+      transform:translateY(-50%);
+      z-index:10;
+      max-width:600px;
+    }
+
+    .hero-eyebrow{
+      color:red;
+      letter-spacing:3px;
+      text-transform:uppercase;
+    }
+
+    h1{
+      font-size:70px;
+      margin:10px 0;
+    }
+
+    h1 em{
+      color:red;
+      font-style:normal;
+      display:block;
+    }
+
+    .hero-sub{
+      color:#ddd;
+      line-height:1.7;
+    }
+
+    .slider-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      z-index:20;
+      width:50px;
+      height:50px;
+      border:none;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      color:white;
+      cursor:pointer;
+    }
+
+    .prev{ left:20px; }
+    .next{ right:20px; }
+
+    .stats-strip{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      background:#1a1a1a;
+      padding:30px;
+      text-align:center;
+    }
+
+    .stat-num{
+      color:red;
+      font-size:40px;
+      font-weight:bold;
+    }
+
+    .why-section{
+      padding:80px 5%;
+      background:url("image/bugati.png") center/cover fixed;
+      position:relative;
+    }
+
+    .why-section::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.7);
+    }
+
+    .why-layout{
+      position:relative;
+      z-index:1;
+    }
+
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:20px;
+      padding:50px;
+    }
+
+    .cat-card{
+      position:relative;
+      height:400px;
+      overflow:hidden;
+      border-radius:10px;
+    }
+
+    .cat-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .cat-content{
+      position:absolute;
+      bottom:20px;
+      left:20px;
+      z-index:2;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap');
+
+/* ===================== DESIGN SYSTEM ===================== */
+:root {
+  --red:        #C8102E;
+  --red-dark:   #8B0A1F;
+  --red-glow:   rgba(200, 16, 46, 0.35);
+  --black:      #0A0A0A;
+  --surface:    #111111;
+  --surface2:   #1A1A1A;
+  --surface3:   #222222;
+  --border:     rgba(255,255,255,0.07);
+  --white:      #FFFFFF;
+  --offwhite:   #F0EBE3;
+  --muted:      #888888;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+  --font-cond:    'Barlow Condensed', sans-serif;
+  --radius:     4px;
+  --radius-lg:  12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===================== RESET ===================== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { display: block; width: 100%; }
+button { cursor: pointer; font-family: var(--font-body); border: none; outline: none; }
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+/* ===================== SELECTION ===================== */
+::selection { background: var(--red); color: var(--white); }
+
+/* ===================== NAVBAR ===================== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  height: 72px;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+.logo-icon {
+  width: 36px; height: 36px;
+  background: var(--red);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+.nav-links a {
+  font-family: var(--font-cond);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color var(--transition);
+}
+.nav-links a:hover,
+.nav-links a.active { color: var(--white); }
+.nav-links a.active { position: relative; }
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+}
+
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--red);
+  color: var(--white) !important;
+  border-radius: var(--radius);
+  font-family: var(--font-cond);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background var(--transition), transform var(--transition);
+}
+.nav-cta:hover { 
+  background: var(--red-dark); 
+  transform: translateY(-1px); 
+  color: var(--white) !important; }
+
+/* ===================== PAGE HEADER (inner pages) ===================== */
+.page-header {
+  padding: 80px 5%;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: 5%;
+  font-family: var(--font-display);
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  line-height: 1;
+  pointer-events: none;
+}
+.page-header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-cond);
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+.page-header-tag::before {
+  content: '';
+  width: 24px; height: 2px;
+  background: var(--red);
+}
+.page-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  letter-spacing: 3px;
+  line-height: 1;
+  color: var(--white);
+}
+.page-header p {
+  margin-top: 14px;
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 500px;
+}
+
+/* ===================== SECTION TITLE ===================== */
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-cond);
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+.section-tag::before {
+  content: '';
+  width: 20px; height: 2px;
+  background: var(--red);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--white);
+}
+
+/* ===================== FOOTER ===================== */
+.footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 64px 5% 28px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+.footer-brand p {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  max-width: 280px;
+}
+.footer-col h4 {
+  font-family: var(--font-cond);
+  font-size: 0.72rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.footer-col a {
+  display: block;
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  transition: color var(--transition);
+}
+.footer-col a:hover { color: var(--white); }
+  </style>
+</head>
+
+<body>
+<nav class="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-icon">
+      <i class="fas fa-car-side"></i>
+    </div>
+    ODEMINE
+  </a>
+
+  <ul class="nav-links">
+    <li>
+      <a href="index.html" class="active">Home</a>
+    </li>
+
+    <li>
+      <a href="about">About</a>
+    </li>
+
+    <li>
+      <a href="offer">Offers</a>
+    </li>
+
+    <li>
+      <a href="rents">Rents</a>
+    </li>
+
+    <li>
+      <a href="location">Locations</a>
+    </li>
+
+    <li>
+      <a href="contact">Contact Us</a>
+    </li>
+  </ul>
+</nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="slide active">
+      <img src="image/bmwm5.avif">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Premium Vehicle Rental</div>
+        <h1>Drive Your <em>Dreams.</em></h1>
+        <p class="hero-sub">
+          Rent premium EVs and luxury vehicles at the best prices.
+        </p>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="image/gt3.jpg">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Sports Cars</div>
+        <h1>Feel The <em>Speed.</em></h1>
+      </div>
+    </div>
+
+    <div class="slide">
+      <img src="image/marcducati.png">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Electric Cars</div>
+        <h1>Go <em>Electric.</em></h1>
+      </div>
+    </div>
+
+    <button class="slider-btn prev">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <button class="slider-btn next">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-strip">
+    <div>
+      <div class="stat-num">60+</div>
+      <div>Vehicles Available</div>
+    </div>
+
+    <div>
+      <div class="stat-num">10K+</div>
+      <div>Happy Customers</div>
+    </div>
+
+    <div>
+      <div class="stat-num">3</div>
+      <div>Branch Locations</div>
+    </div>
+
+    <div>
+      <div class="stat-num">24/7</div>
+      <div>Customer Support</div>
+    </div>
+  </div>
+
+  <!-- WHY US -->
+  <section class="why-section">
+    <div class="why-layout">
+      <h2>Why Odemine</h2>
+      <p>
+        From spontaneous weekend getaways to long business trips,
+        Odemine offers the flexibility and quality you deserve.
+      </p>
+    </div>
+  </section>
+
+  <!-- CATEGORY -->
+  <section class="category-grid">
+
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?q=80&w=800">
+      <div class="cat-content">
+        <h2>EV Cars</h2>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800">
+      <div class="cat-content">
+        <h2>Fuel Cars</h2>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=800">
+      <div class="cat-content">
+        <h2>Big Bikes</h2>
+      </div>
+    </div>
+
+  </section>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+
+    <div class="footer-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-car-side"></i>
+        </div>
+        ODEMINE
+      </a>
+
+      <p>
+        Your trusted partner for premium vehicle rentals.
+        Drive your dreams with us.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="offer.html">Special Offers</a>
+      <a href="contact.html">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+
+      <div class="social-row">
+        <a class="social-btn" href="#">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+
+        <a class="social-btn" href="#">
+          <i class="fab fa-instagram"></i>
+        </a>
+
+        <a class="social-btn" href="#">
+          <i class="fab fa-tiktok"></i>
+        </a>
+
+        <a class="social-btn" href="#">
+          <i class="fab fa-telegram"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Odemine. All rights reserved.</p>
+
+    <p style="color:#555; font-size:0.8rem;">
+      Drive Your Dreams
+    </p>
+  </div>
+</footer>
+</body>
+</html>
