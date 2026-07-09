@@ -1,8 +1,6 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
-from .models import Booking, Promo
+from .models import Booking
 from .serializers import BookingSerializer
 from promocode.models import PromoCode
 
