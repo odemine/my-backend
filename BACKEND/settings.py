@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'vehicles',
     'booking',
     'customer',
+    'promocode',
 ]
 
 CORS_ALLOWED_ORIGINS = [
