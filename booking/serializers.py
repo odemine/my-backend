@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Booking, Promo
+from .models import Booking
 
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
