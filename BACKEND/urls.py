@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     path('api/vehicles/', include('vehicles.urls')),
     path('api/booking/', include('booking.urls')),
-    path('api/customer/', include('customer.urls')),  
+    path('api/customer/', include('customer.urls')), 
+    path('api/promocode/', include('promocode.urls')), 
 ]
