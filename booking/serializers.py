@@ -9,7 +9,3 @@ class BookingSerializer(serializers.ModelSerializer):
             'unit_price', 'promo_code', 'payment_method', 'total_cost', 'status', 'created_at'
         ]
 
-class PromoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Promo
-        fields = ['id', 'code', 'discount_percent', 'is_used', 'created_at']
