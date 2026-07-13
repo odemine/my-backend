@@ -4,7 +4,7 @@ from promocode.models import PromoCode
 class Command(BaseCommand):
     help = 'Seeds the database with the React PromoCode mock data'
 
-    def handle(self, *ares, **options):
+    def handle(self, *args, **options):
         promocode_data = [
             {"name": "Long Term Rental", "code" : "LONG30", "discount_percentage": 30, "condition": "Up to seven days", "description": "Rent any vehicle for 7 or more days and unlock our most generous discount."},
             {"name": "Weekend Special", "code" : "WEEKEND20", "discount_percentage": 20, "condition": "Friday, Saturday and Sunday", "description": "Rent any EV cars for 2 or 3 days over the weekend and enjoy a 20% discount."},
