@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BACKEND.settings')
 django.setup()
 
+from promocode.models import PromoCode
 from vehicles.models import Vehicle
 vehicles_data = [
     {"name": "Xiaomi YU7", "vehicle_type": "ev", "image": "/image/xiaomi-YU7.JPG", "price": 70, "badge_icon": "fas fa-bolt", "badge_label": "EV"},
@@ -43,6 +44,16 @@ vehicles_data = [
     {"name": "Yamaha R1M", "vehicle_type": "bike", "image": "/image/yamaha-r1m.jpg", "price": 160, "badge_icon": "fas fa-motorcycle", "badge_label": "Bike"}
 ]
 
+promocode_data = [
+    {"name": "Long Term Rental", "code" : "LONG30", "discount_percentage": 30, "description": "Rent any vehicle for 7 or more days and unlock our most generous discount."},
+    {"name": "Weekend Special", "code" : "WEEKEND20", "discount_percentage": 20, "description": "Rent any EV cars for 2 or 3 days over the weekend and enjoy a 20% discount."},
+    {"name": "Weekday Deal", "code" : "WEEKDAY25", "discount_percentage": 25, "description": "Beat the weekend rush. Rent Monday through Thursday and enjoy 25% savings."},
+    {"name": "New Customer", "code" : "NEW50", "discount_percentage": 50, "description" : "Welcome! Get 50% off for your first rental as a token of appreciation."},
+    {"name": "Summer Ride", "code" : "SUMMERRIDE", "discount_percentage": 40, "description": "Rent any big bikes to explore new places this summer and save 40% off."},
+    {"name": "Luxury Package", "code" : "LUXURY15", "discount_percentage": 15, "description": "Upgrade your experience to our premium luxury vehicle tier and save 15%."},
+]
+
+# --- Run Vehicles Seeding ---
 print("Seeding vehicles into database...")
 for item in vehicles_data:
     Vehicle.objects.get_or_create(
@@ -51,4 +62,22 @@ for item in vehicles_data:
         image=item["image"],
         price=item["price"]
     )
-print("Seeding complete! You can delete this file now.")
+print("Vehicles seeding complete!")
+
+# --- Run Promocodes Seeding ---
+print("\nClearing old PromoCodes to prevent skipped values...")
+PromoCode.objects.all().delete()  # Deletes any existing bad/empty data first
+
+print("Seeding new promocodes into database...")
+promo_count = 0
+for item in promocode_data:
+    # Creating records with the proper names and codes
+    PromoCode.objects.create(
+        name=item["name"],                  # Maps correctly to your new 'name' column
+        code=item["code"],                  # Maps correctly to 'code' column
+        discount_percentage=item["discount_percentage"],
+        description=item["description"],
+        status="active"
+    )
+    promo_count += 1
+print(f"PromoCodes seeding complete! Successfully seeded {promo_count} codes.")
